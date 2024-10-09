@@ -22,7 +22,7 @@ export default function Signup() {
       const {email, password} = formValues;
       await createUserWithEmailAndPassword(firebaseAuth, email, password)
     } catch (err) {
-      console.log(err);
+      console.log("OOPs" + err);
     }
   };
 
