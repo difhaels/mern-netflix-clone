@@ -17,7 +17,7 @@ export default function Navbar({isScolled}) {
     const navigate = useNavigate();
 
     onAuthStateChanged(firebaseAuth, (currentUser) => {
-        if (currentUser) navigate("/login")
+        if (!currentUser) navigate("/login")
     })
 
     const [showSearch, setShowSearch] = useState(false);

@@ -1,73 +1,84 @@
-import React, { useState } from "react"
-import styled from "styled-components"
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../utils/firebase-config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
-    email:"",
-    password: ""
+    email: "",
+    password: "",
   });
 
-  // handle daftar akun
+  useEffect(() => {
+    // Memantau status autentikasi pengguna
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (currentUser) {
+        // Jika pengguna sudah login, arahkan ke halaman utama
+        navigate("/");
+      }
+    });
+
+    // Unsubscribe dari listener saat komponen di-unmount
+    return () => unsubscribe();
+  }, [navigate]);
+
+  // Fungsi untuk handle login
   const handleLogin = async () => {
     try {
-      const {email, password} = formValues;
-      await signInWithEmailAndPassword(firebaseAuth, email, password)
+      const { email, password } = formValues;
+      await signInWithEmailAndPassword(firebaseAuth, email, password);
+      navigate("/"); // Navigasi ke halaman utama setelah login berhasil
     } catch (err) {
       console.log(err);
     }
   };
 
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (currentUser) navigate("/")
-  })
-
   return (
     <Container>
-      <BackgroundImage/>
+      <BackgroundImage />
       <div className="content">
-        <Header/>
+        <Header />
         <div className="form-container flex column a-center j-center">
           <div className="form flex column a-center j-center">
             <div className="title">
               <h3>Login</h3>
             </div>
             <div className="container flex column">
-              <input 
-                type="email" 
-                placeholder="Email Address" 
-                name="email" 
-                value={formValues.email} 
-                onChange={(e)=> {
+              <input
+                type="email"
+                placeholder="Email Address"
+                name="email"
+                value={formValues.email}
+                onChange={(e) => {
                   setFormValues({
-                    ...formValues, [e.target.name]: e.target.value,
-                  })
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  });
                 }}
               />
-              <input 
-                type="password"  
-                placeholder="Password" 
+              <input
+                type="password"
+                placeholder="Password"
                 name="password"
-                value={formValues.password} 
-                onChange={(e)=> {
+                value={formValues.password}
+                onChange={(e) => {
                   setFormValues({
-                    ...formValues, [e.target.name]: e.target.value,
-                  })
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  });
                 }}
               />
-              <button onClick={()=> handleLogin()}>Login</button>
+              <button onClick={() => handleLogin()}>Login</button>
             </div>
           </div>
         </div>
       </div>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -76,7 +87,7 @@ const Container = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.5);
     height: 100vh;
     width: 100vw;
     display: grid;
