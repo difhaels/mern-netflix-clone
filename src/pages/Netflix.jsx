@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar';
 import backgroundImage from '../assets/home.jpg';
-import movieLogo from '../assets/homeTitle.webp';
+import movieLogo from '../assets/homeTitle.png';
 import { FaPlay } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 export default function Netfix() {
 
@@ -14,6 +15,8 @@ export default function Netfix() {
       setIsScrolled(window.scrollY === 0 ? false: true);
       return () => (window.onscroll = null)
     }
+
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -25,7 +28,7 @@ export default function Netfix() {
             <img src={movieLogo} alt="mlogo" />
           </div>
           <div className="buttons flex">
-            <button className="flex j-center a-center"><FaPlay/> Play</button>
+            <button className="flex j-center a-center" onClick={() => navigate('/player')}><FaPlay/> Play</button>
             <button className="flex j-center a-center"><AiOutlineInfoCircle/> More Info</button>
           </div>
         </div>
@@ -53,7 +56,7 @@ const Container = styled.div`
         height: auto;
         margin-left: 5rem;
         img {
-          max-width: 700px; /* Atur ukuran sesuai kebutuhan */
+          max-width: 400px; /* Atur ukuran sesuai kebutuhan */
           height: auto;
         }
       }
