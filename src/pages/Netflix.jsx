@@ -34,7 +34,9 @@ export default function Netfix() {
 
   return (
     <Container>
-      <Navbar isScrolled={isScrolled}/>
+      <div className="navbar">
+        <Navbar isScolled={isScrolled}/>
+      </div>
       <div className="hero">
         <img src={backgroundImage} alt="bg" className='background-image' />
         <div className="container">
