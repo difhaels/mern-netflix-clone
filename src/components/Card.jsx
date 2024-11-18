@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import video from '../assets/video.mp4';
@@ -7,10 +7,37 @@ import { RiThumbUpFill, RiThumbDownFill } from 'react-icons/ri';
 import { BsCheck } from 'react-icons/bs';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
+import { onAuthStateChanged } from 'firebase/auth';
+import { firebaseAuth } from '../utils/firebase-config';
+import axios from 'axios';
 
 export default React.memo(  function Card({movieData, isLiked = false}) {
   const [isHovered, setIsHovered] = useState(false);
+  const [email, setEmail] = useState(undefined);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Memantau status autentikasi pengguna
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (currentUser) {
+        setEmail(currentUser.email)
+      } else {
+        navigate("/login")
+      }
+    });
+
+    // Unsubscribe dari listener saat komponen di-unmount
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const addToList = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/user/add", {email, data:movieData})
+    } catch (err) {
+      console.log(err)
+    }
+  };
+
   return (
     <Container onMouseEnter={()=> setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt="movie" />
@@ -35,14 +62,14 @@ export default React.memo(  function Card({movieData, isLiked = false}) {
               <h3 className="name" onClick={() => navigate("/player")}>{movieData.name}</h3>
               <div className="icons flex j-between">
                 <div className="controls flex">
-                  <IoPlayCircleSharp title='play'                 onClick={() => navigate("/player")}
+                  <IoPlayCircleSharp title='play'onClick={() => navigate("/player")}
                   />
                   <RiThumbUpFill title='like'/>
                   <RiThumbDownFill title='dislike'/>
                   {
                     isLiked ? 
                       <BsCheck title='Remove From List'/> :
-                      <AiOutlinePlus title='Add To My List'/>
+                      <AiOutlinePlus title='Add To My List' onClick={addToList}/>
                     
                   }
                 </div>
