@@ -6,6 +6,7 @@ import Netflix from './pages/Netflix'
 import Player from './pages/Player'
 import Movies from './pages/Movies'
 import TVShows from './pages/TVShows'
+import UserLiked from './pages/UserLiked'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path='/Player' element={<Player/>}/>
         <Route path='/Movies' element={<Movies/>}/>
         <Route path='/Tv' element={<TVShows/>}/>
+        <Route path='/mylist' element={<UserLiked/>}/>
         <Route path='/' element={<Netflix/>}/>
       </Routes>
     </BrowserRouter>

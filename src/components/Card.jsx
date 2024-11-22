@@ -13,8 +13,8 @@ import axios from 'axios';
 
 export default React.memo(  function Card({movieData, isLiked = false}) {
   const [isHovered, setIsHovered] = useState(false);
-  const [email, setEmail] = useState(undefined);
   const navigate = useNavigate();
+  const [email, setEmail] = useState(undefined);
 
   useEffect(() => {
     // Memantau status autentikasi pengguna
