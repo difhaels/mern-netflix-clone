@@ -10,11 +10,14 @@ import { BiChevronDown } from 'react-icons/bi';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../utils/firebase-config';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { removeFromLikedMovies } from '../store';
 
 export default React.memo(  function Card({movieData, isLiked = false}) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const [email, setEmail] = useState(undefined);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Memantau status autentikasi pengguna
@@ -68,7 +71,7 @@ export default React.memo(  function Card({movieData, isLiked = false}) {
                   <RiThumbDownFill title='dislike'/>
                   {
                     isLiked ? 
-                      <BsCheck title='Remove From List'/> :
+                      <BsCheck title='Remove From List' onClick={() => {dispatch(removeFromLikedMovies({email, movieId:movieData.id}))}}/> :
                       <AiOutlinePlus title='Add To My List' onClick={addToList}/>
                     
                   }
