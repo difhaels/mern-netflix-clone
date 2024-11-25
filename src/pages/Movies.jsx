@@ -25,7 +25,7 @@ export default function Movies() {
   }, [dispatch]); // gw tambah dispatch
 
   useEffect(() => {
-    if (genresLoaded) dispatch(fetchMovies({ type: "movies" }));
+    if (genresLoaded) dispatch(fetchMovies({ type: "movie" }));
   }, [dispatch, genresLoaded]); // gk sesuai video // update: sesuai video param yg ke 2
 
   window.onscroll = () => {
