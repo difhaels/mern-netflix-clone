@@ -44,7 +44,7 @@ export default function Navbar({isScolled}) {
                 </div>
                 <div className="right flex a-center">
                     <div className={`search ${showSearch? "show-search":""}`}>
-                        <button onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false)}}>
+                        <button className='search-button' onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false)}}>
                             <FaSearch />
                         </button>
                         <input type="text" placeholder='Search' onMouseEnter={() => setInputHover(true)} onMouseLeave={() => setInputHover(false)} onBlur={() => {
@@ -52,7 +52,7 @@ export default function Navbar({isScolled}) {
                             setInputHover(false)
                         }}/>
                     </div>
-                    <button onClick={()=>signOut(firebaseAuth)}>
+                    <button onClick={()=>signOut(firebaseAuth)} className='off'>
                         <FaPowerOff/>
                     </button>
                 </div>
@@ -132,6 +132,12 @@ const Container = styled.div`
                         outline: none;
                     }
                 }
+                .search-button {
+                    cursor: pointer;
+                }
+            }
+            .off {
+                cursor: pointer;
             }
             .show-search {
                 border: 1px;
